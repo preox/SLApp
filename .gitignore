@@ -1,2 +1,4 @@
-SLApp/bin/*
-SLApp/obj/*
+SLApp/bin/*.*
+SLApp/bin/Debug/*.*
+SLApp/obj/*.*
+SLApp/obj/Debug/*.*
