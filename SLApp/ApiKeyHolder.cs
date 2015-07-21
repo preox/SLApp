@@ -10,10 +10,8 @@ namespace SLApp
     public sealed class ApiKeyHolder
     {
         static readonly ApiKeyHolder _instance = new ApiKeyHolder();
-
         private string apiKeyDepartures;
         private string apiKeyStation;
-
 
         // private constructor
         public static ApiKeyHolder Instance

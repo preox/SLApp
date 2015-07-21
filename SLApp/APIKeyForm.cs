@@ -19,7 +19,6 @@ namespace SLApp
 
         private void APIKeyForm_Shown(object sender, EventArgs e)
         {
-
             ApiKeyHolder apiKey = ApiKeyHolder.Instance;
             realTimeKeyTextBox.Text = apiKey.ApiKeyDepartures;
             stationKeyTextBox.Text = apiKey.ApiKeyStation;

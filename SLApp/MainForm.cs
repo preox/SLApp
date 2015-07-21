@@ -14,9 +14,19 @@ namespace SLApp
 {
     public partial class MainForm : Form
     {
+        Timer blockTimer = new Timer();
+
         public MainForm()
         {
             InitializeComponent();
+            Bitmap bmp = SLApp.Properties.Resources.sl_logo;
+            this.Icon = Icon.FromHandle(bmp.GetHicon());
+
+            blockTimer.Enabled = false;
+            blockTimer.Interval = 100;
+            blockTimer.Tick += new EventHandler(blockTimer_Tick);
+
+
         }
 
 
@@ -30,10 +40,10 @@ namespace SLApp
             /* 
             {"StatusCode":0,"Message":null,"ExecutionTime":0,"ResponseData":[{"Name":"Akalla (Stockholm)","SiteId":"9300","Type":"Station","X":"17913281","Y":"59415461"},{"Name":"Akalla centrum (Stockholm)","SiteId":"9300","Type":"Station","X":"17913281","Y":"59415461"},{"Name":"Kallhäll (Järfälla)","SiteId":"9701","Type":"Station","X":"17805949","Y":"59453638"},{"Name":"Kallhälls centrum (Järfälla)","SiteId":"9701","Type":"Station","X":"17805949","Y":"59453638"},{"Name":"Kallhälls station (Järfälla)","SiteId":"9701","Type":"Station","X":"17805949","Y":"59453638"},{"Name":"AKA","SiteId":"9300","Type":"Station","X":"17913281","Y":"59415461"},{"Name":"Odengatan/Valhallavägen (Stockholm)","SiteId":"1082","Type":"Station","X":"18065890","Y":"59346622"},{"Name":"Valhallavägen/Odengatan (Stockholm)","SiteId":"1082","Type":"Station","X":"18065890","Y":"59346622"},{"Name":"Kärnmakargränd (Järfälla)","SiteId":"5772","Type":"Station","X":"17805904","Y":"59457539"},{"Name":"Valla torg (Stockholm)","SiteId":"1525","Type":"Station","X":"18049045","Y":"59293981"}]}
             */
-
+            /*
             string jsonTest2 =  "{\"StatusCode\":0,\"Message\":null,\"ExecutionTime\":0,\"ResponseData\":[" + 
                                 "{\"Name\":\"Akalla (Stockholm)\",\"SiteId\":\"9300\",\"Type\":\"Station\",\"X\":\"17913281\",\"Y\":\"59415461\"}," + 
-                                "{\"Name\":\"Akalla centrum (Stockholm)\",\"SiteId\":\"9300\",\"Type\":\"Station\",\"X\":\"17913281\",\"Y\":\"59415461\"}," + 
+                                "{\"Name\":\"Akalla centrum (Stockholm)\",\"SiteId\":\"9300\",\"Type\":\"Station\",\"X\":\"17913281\",\"Y\":\"59415461\"}," +  
                                 "{\"Name\":\"Kallhäll (Järfälla)\",\"SiteId\":\"9701\",\"Type\":\"Station\",\"X\":\"17805949\",\"Y\":\"59453638\"}," + 
                                 "{\"Name\":\"Kallhälls centrum (Järfälla)\",\"SiteId\":\"9701\",\"Type\":\"Station\",\"X\":\"17805949\",\"Y\":\"59453638\"}," + 
                                 "{\"Name\":\"Kallhälls station (Järfälla)\",\"SiteId\":\"9701\",\"Type\":\"Station\",\"X\":\"17805949\",\"Y\":\"59453638\"}," + 
@@ -50,7 +60,7 @@ namespace SLApp
             {
                 Console.WriteLine(st);
             }
-
+            */
 
             #endregion
 
@@ -58,62 +68,7 @@ namespace SLApp
             // api.sl.se/api2/realtimedepartures.<FORMAT>?key=<DIN API NYCKEL>&siteid=<SITEID>&timewindow=<TIMEWINDOW>
             Console.WriteLine("\n\n###Realtidsförfrågan ");
 
-            string jsonRealTime =   "{\"StatusCode\":0,\"Message\":null,\"ExecutionTime\":1876,\"ResponseData\":{\"LatestUpdate\":\"2015-07-13T23:40:18\",\"DataAge\":33," +
-                                                "\"Metros\":[{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans gröna linje\",\"DisplayTime\":\"2 min\",\"SafeDestinationName\":\"Farsta strand\",\"GroupOfLineId\":1,\"DepartureGroupId\":1,\"PlatformMessage\":\"Felaktig information kan förekomma på skyltarna. Tågen avgår enligt tidtabell.\",\"TransportMode\":\"METRO\",\"LineNumber\":\"18\",\"Destination\":\"Farsta strand\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans gröna linje\",\"DisplayTime\":\"3 min\",\"SafeDestinationName\":\"Hässelby strand\",\"GroupOfLineId\":1,\"DepartureGroupId\":2,\"PlatformMessage\":\"Felaktig information kan förekomma på skyltarna. Tågen avgår enligt tidtabell.\",\"TransportMode\":\"METRO\",\"LineNumber\":\"19\",\"Destination\":\"Hässelby strand\",\"JourneyDirection\":1,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans röda linje\",\"DisplayTime\":\"5 min\",\"SafeDestinationName\":\"Ropsten\",\"GroupOfLineId\":2,\"DepartureGroupId\":1,\"PlatformMessage\":\"Roslagsbanan: Tågen på Kårsta- och Österskärlinjen vänder vid Universitet p.g.a. underhållsarbete vid Östra station. Läs mer på sl.se.\",\"TransportMode\":\"METRO\",\"LineNumber\":\"13\",\"Destination\":\"Ropsten\",\"JourneyDirection\":1,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans röda linje\",\"DisplayTime\":\"6 min\",\"SafeDestinationName\":\"Fruängen\",\"GroupOfLineId\":2,\"DepartureGroupId\":2,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"14\",\"Destination\":\"Fruängen\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans röda linje\",\"DisplayTime\":\"12 min\",\"SafeDestinationName\":\"Sätra\",\"GroupOfLineId\":2,\"DepartureGroupId\":2,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"13\",\"Destination\":\"Sätra\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans röda linje\",\"DisplayTime\":\"20 min\",\"SafeDestinationName\":\"Liljeholmen\",\"GroupOfLineId\":2,\"DepartureGroupId\":2,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"14\",\"Destination\":\"Liljeholmen\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans blå linje\",\"DisplayTime\":\"7 min\",\"SafeDestinationName\":\"Kungsträdgården\",\"GroupOfLineId\":3,\"DepartureGroupId\":1,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"11\",\"Destination\":\"Kungsträdgården\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans blå linje\",\"DisplayTime\":\"15 min\",\"SafeDestinationName\":\"Kungsträdgården\",\"GroupOfLineId\":3,\"DepartureGroupId\":1,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"10\",\"Destination\":\"Kungsträdgården\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans blå linje\",\"DisplayTime\":\"28 min\",\"SafeDestinationName\":\"Kungsträdgården\",\"GroupOfLineId\":3,\"DepartureGroupId\":1,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"10\",\"Destination\":\"Kungsträdgården\",\"JourneyDirection\":2,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans blå linje\",\"DisplayTime\":\"4 min\",\"SafeDestinationName\":\"Akalla\",\"GroupOfLineId\":3,\"DepartureGroupId\":2,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"11\",\"Destination\":\"Akalla\",\"JourneyDirection\":1,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans blå linje\",\"DisplayTime\":\"11 min\",\"SafeDestinationName\":\"Hjulsta\",\"GroupOfLineId\":3,\"DepartureGroupId\":2,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"10\",\"Destination\":\"Hjulsta\",\"JourneyDirection\":1,\"SiteId\":9001}," +
-                                                "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans blå linje\",\"DisplayTime\":\"19 min\",\"SafeDestinationName\":\"Akalla\",\"GroupOfLineId\":3,\"DepartureGroupId\":2,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"11\",\"Destination\":\"Akalla\",\"JourneyDirection\":1,\"SiteId\":9001}]," +
-                                                "\"Buses\":[{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10289,\"StopPointNumber\":10843,\"StopPointDesignation\":\"A\",\"TimeTabledDateTime\":\"2015-07-13T23:41:00\",\"ExpectedDateTime\":\"2015-07-13T23:43:19\",\"DisplayTime\":\"2 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"53\",\"Destination\":\"Henriksdalsberget\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10289,\"StopPointNumber\":10843,\"StopPointDesignation\":\"A\",\"TimeTabledDateTime\":\"2015-07-13T23:45:00\",\"ExpectedDateTime\":\"2015-07-13T23:45:00\",\"DisplayTime\":\"4 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"50\",\"Destination\":\"Hornsberg\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10526,\"StopPointDesignation\":\"K\",\"TimeTabledDateTime\":\"2015-07-13T23:48:00\",\"ExpectedDateTime\":\"2015-07-13T23:47:52\",\"DisplayTime\":\"7 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Karolinska institutet\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10538,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-13T23:49:00\",\"ExpectedDateTime\":\"2015-07-13T23:48:52\",\"DisplayTime\":\"8 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Karolinska institutet\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10842,\"StopPointDesignation\":\"G\",\"TimeTabledDateTime\":\"2015-07-13T23:51:00\",\"ExpectedDateTime\":\"2015-07-13T23:51:00\",\"DisplayTime\":\"10 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"59\",\"Destination\":\"Fredhäll\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10842,\"StopPointDesignation\":\"G\",\"TimeTabledDateTime\":\"2015-07-13T23:52:00\",\"ExpectedDateTime\":\"2015-07-13T23:53:32\",\"DisplayTime\":\"12 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"50\",\"Destination\":\"Stora Lappkärrsberget\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10842,\"StopPointDesignation\":\"G\",\"TimeTabledDateTime\":\"2015-07-13T23:52:00\",\"ExpectedDateTime\":\"2015-07-13T23:55:11\",\"DisplayTime\":\"14 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"53\",\"Destination\":\"Fridhemsplan\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10289,\"StopPointNumber\":10843,\"StopPointDesignation\":\"A\",\"TimeTabledDateTime\":\"2015-07-13T23:59:00\",\"ExpectedDateTime\":\"2015-07-13T23:59:00\",\"DisplayTime\":\"18 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"59\",\"Destination\":\"Norra Hammarbyhamnen\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10537,\"StopPointDesignation\":\"R\",\"TimeTabledDateTime\":\"2015-07-14T00:00:00\",\"ExpectedDateTime\":\"2015-07-14T00:00:00\",\"DisplayTime\":\"19 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Blockhusudden\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10291,\"StopPointDesignation\":\"O\",\"TimeTabledDateTime\":\"2015-07-14T00:02:00\",\"ExpectedDateTime\":\"2015-07-14T00:02:00\",\"DisplayTime\":\"21 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Blockhusudden\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":11524,\"StopPointDesignation\":\"Z\",\"TimeTabledDateTime\":\"2015-07-14T00:02:00\",\"ExpectedDateTime\":\"2015-07-14T00:03:17\",\"DisplayTime\":\"22 min\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"57\",\"Destination\":\"Karolinska sjukhuset\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":11522,\"StopPointDesignation\":\"L\",\"TimeTabledDateTime\":\"2015-07-14T00:04:00\",\"ExpectedDateTime\":\"2015-07-14T00:04:00\",\"DisplayTime\":\"00:04\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"57\",\"Destination\":\"Sofia\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10537,\"StopPointDesignation\":\"R\",\"TimeTabledDateTime\":\"2015-07-14T00:04:00\",\"ExpectedDateTime\":\"2015-07-14T00:04:00\",\"DisplayTime\":\"00:04\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"54\",\"Destination\":\"Storängsbotten\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10526,\"StopPointDesignation\":\"K\",\"TimeTabledDateTime\":\"2015-07-14T00:04:39\",\"ExpectedDateTime\":\"2015-07-14T00:04:39\",\"DisplayTime\":\"00:04\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"54\",\"Destination\":\"Fridhemsplan\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10291,\"StopPointDesignation\":\"O\",\"TimeTabledDateTime\":\"2015-07-14T00:05:10\",\"ExpectedDateTime\":\"2015-07-14T00:05:10\",\"DisplayTime\":\"00:05\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"54\",\"Destination\":\"Storängsbotten\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10538,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:06:00\",\"ExpectedDateTime\":\"2015-07-14T00:06:00\",\"DisplayTime\":\"00:06\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"54\",\"Destination\":\"Fridhemsplan\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10289,\"StopPointNumber\":10843,\"StopPointDesignation\":\"A\",\"TimeTabledDateTime\":\"2015-07-14T00:12:00\",\"ExpectedDateTime\":\"2015-07-14T00:13:41\",\"DisplayTime\":\"00:12\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"53\",\"Destination\":\"Henriksdalsberget\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10289,\"StopPointNumber\":10843,\"StopPointDesignation\":\"A\",\"TimeTabledDateTime\":\"2015-07-14T00:15:00\",\"ExpectedDateTime\":\"2015-07-14T00:15:00\",\"DisplayTime\":\"00:15\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"50\",\"Destination\":\"Hornsberg\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10526,\"StopPointDesignation\":\"K\",\"TimeTabledDateTime\":\"2015-07-14T00:17:00\",\"ExpectedDateTime\":\"2015-07-14T00:20:35\",\"DisplayTime\":\"00:17\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Karolinska institutet\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10538,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:18:00\",\"ExpectedDateTime\":\"2015-07-14T00:21:35\",\"DisplayTime\":\"00:18\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Karolinska institutet\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10842,\"StopPointDesignation\":\"G\",\"TimeTabledDateTime\":\"2015-07-14T00:21:00\",\"ExpectedDateTime\":\"2015-07-14T00:22:49\",\"DisplayTime\":\"00:21\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"53\",\"Destination\":\"Fridhemsplan\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10537,\"StopPointDesignation\":\"R\",\"TimeTabledDateTime\":\"2015-07-14T00:24:00\",\"ExpectedDateTime\":\"2015-07-14T00:24:00\",\"DisplayTime\":\"00:24\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Kungsträdgården\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10291,\"StopPointDesignation\":\"O\",\"TimeTabledDateTime\":\"2015-07-14T00:26:00\",\"ExpectedDateTime\":\"2015-07-14T00:26:00\",\"DisplayTime\":\"00:26\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"69\",\"Destination\":\"Kungsträdgården\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10289,\"StopPointNumber\":10843,\"StopPointDesignation\":\"A\",\"TimeTabledDateTime\":\"2015-07-14T00:29:00\",\"ExpectedDateTime\":\"2015-07-14T00:29:00\",\"DisplayTime\":\"00:29\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"59\",\"Destination\":\"Norra Hammarbyhamnen\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":11522,\"StopPointDesignation\":\"L\",\"TimeTabledDateTime\":\"2015-07-14T00:34:00\",\"ExpectedDateTime\":\"2015-07-14T00:34:00\",\"DisplayTime\":\"00:34\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"57\",\"Destination\":\"Sofia\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Sergels torg\",\"StopAreaNumber\":10291,\"StopPointNumber\":10526,\"StopPointDesignation\":\"K\",\"TimeTabledDateTime\":\"2015-07-14T00:34:39\",\"ExpectedDateTime\":\"2015-07-14T00:34:39\",\"DisplayTime\":\"00:34\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"54\",\"Destination\":\"Fridhemsplan\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"GroupOfLine\":null,\"StopAreaName\":\"Centralen\",\"StopAreaNumber\":10537,\"StopPointNumber\":10538,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:36:00\",\"ExpectedDateTime\":\"2015-07-14T00:36:00\",\"DisplayTime\":\"00:36\",\"Deviations\":null,\"TransportMode\":\"BUS\",\"LineNumber\":\"54\",\"Destination\":\"Fridhemsplan\",\"SiteId\":9001}]," +
-                                                "\"Trains\":[{\"JourneyDirection\":2,\"SecondaryDestinationName\":null,\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5014,\"StopPointDesignation\":\"N\",\"TimeTabledDateTime\":\"2015-07-13T23:46:00\",\"ExpectedDateTime\":\"2015-07-13T23:46:00\",\"DisplayTime\":\"5 min\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"36\",\"Destination\":\"Märsta\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"SecondaryDestinationName\":\"Älvsjö\",\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-13T23:46:00\",\"ExpectedDateTime\":\"2015-07-13T23:46:00\",\"DisplayTime\":\"5 min\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"36\",\"Destination\":\"Södertälje C\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"SecondaryDestinationName\":null,\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-13T23:53:00\",\"ExpectedDateTime\":\"2015-07-13T23:53:00\",\"DisplayTime\":\"12 min\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"38\",\"Destination\":\"Älvsjö\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"SecondaryDestinationName\":null,\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5014,\"StopPointDesignation\":\"N\",\"TimeTabledDateTime\":\"2015-07-13T23:58:00\",\"ExpectedDateTime\":\"2015-07-13T23:58:00\",\"DisplayTime\":\"17 min\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"35\",\"Destination\":\"Spånga\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"SecondaryDestinationName\":\"Älvsjö\",\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:04:00\",\"ExpectedDateTime\":\"2015-07-14T00:04:00\",\"DisplayTime\":\"00:04\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"35\",\"Destination\":\"Västerhaninge\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"SecondaryDestinationName\":\"Arlanda C\",\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5014,\"StopPointDesignation\":\"N\",\"TimeTabledDateTime\":\"2015-07-14T00:09:00\",\"ExpectedDateTime\":\"2015-07-14T00:09:00\",\"DisplayTime\":\"00:09\",\"Deviations\":[{\"Text\":\"Resa förbi Arlanda C kräver både UL- och SL- biljett.\",\"Consequence\":\"INFORMATION\",\"ImportanceLevel\":5}]," +
-                                                "\"TransportMode\":\"TRAIN\",\"LineNumber\":\"38\",\"Destination\":\"Uppsala C\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"SecondaryDestinationName\":null,\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5014,\"StopPointDesignation\":\"N\",\"TimeTabledDateTime\":\"2015-07-14T00:16:00\",\"ExpectedDateTime\":\"2015-07-14T00:16:00\",\"DisplayTime\":\"00:16\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"36\",\"Destination\":\"Märsta\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"SecondaryDestinationName\":null,\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:16:00\",\"ExpectedDateTime\":\"2015-07-14T00:16:00\",\"DisplayTime\":\"00:16\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"36\",\"Destination\":\"Älvsjö\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"SecondaryDestinationName\":\"Älvsjö\",\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:23:00\",\"ExpectedDateTime\":\"2015-07-14T00:23:00\",\"DisplayTime\":\"00:23\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"38\",\"Destination\":\"Södertälje C\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":2,\"SecondaryDestinationName\":null,\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5014,\"StopPointDesignation\":\"N\",\"TimeTabledDateTime\":\"2015-07-14T00:28:00\",\"ExpectedDateTime\":\"2015-07-14T00:28:00\",\"DisplayTime\":\"00:28\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"35\",\"Destination\":\"Spånga\",\"SiteId\":9001}," +
-                                                "{\"JourneyDirection\":1,\"SecondaryDestinationName\":\"Älvsjö\",\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T00:34:00\",\"ExpectedDateTime\":\"2015-07-14T00:34:00\",\"DisplayTime\":\"00:34\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"35\",\"Destination\":\"Västerhaninge\",\"SiteId\":9001}]," +
-                                                "\"Trams\":[],\"Ships\":[]," +
-                                                "\"StopPointDeviations\":[{\"StopInfo\":{\"StopAreaNumber\":0,\"StopAreaName\":\"Stockholms central\",\"TransportMode\":\"TRAIN\",\"GroupOfLine\":null}," +
-                                                "\"Deviation\":{\"Text\":\"Bussar ersätter sträckan Spånga till Bålsta och Västerhaninge-Nynäshamn till 2/8. Se sl.se\",\"Consequence\":null,\"ImportanceLevel\":5}}]}}";
-            string json2 = "{\"StatusCode\":0,\"Message\":null,\"ExecutionTime\":1912,\"ResponseData\":" +
+             string json2 = "{\"StatusCode\":0,\"Message\":null,\"ExecutionTime\":1912,\"ResponseData\":" +
                                         "{\"LatestUpdate\":\"2015-07-14T08:35:22\",\"DataAge\":23," +
                                         "\"Metros\":[ {\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans gröna linje\",\"DisplayTime\":\"Nu\",\"SafeDestinationName\":\"Alvik\",\"GroupOfLineId\":1,\"DepartureGroupId\":1,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"19\",\"Destination\":\"Alvik\",\"JourneyDirection\":1,\"SiteId\":9001}," +
                                         "{\"StopAreaName\":\"T-Centralen\",\"GroupOfLine\":\"Tunnelbanans gröna linje\",\"DisplayTime\":\"3 min\",\"SafeDestinationName\":\"Åkeshov\",\"GroupOfLineId\":1,\"DepartureGroupId\":1,\"PlatformMessage\":null,\"TransportMode\":\"METRO\",\"LineNumber\":\"17\",\"Destination\":\"Åkeshov\",\"JourneyDirection\":1,\"SiteId\":9001}," +
@@ -224,26 +179,139 @@ namespace SLApp
                                         "{\"JourneyDirection\":1,\"SecondaryDestinationName\":\"Älvsjö\",\"StopAreaName\":\"Stockholms central\",\"StopAreaNumber\":5011,\"StopPointNumber\":5013,\"StopPointDesignation\":\"S\",\"TimeTabledDateTime\":\"2015-07-14T09:34:00\",\"ExpectedDateTime\":\"2015-07-14T09:34:00\",\"DisplayTime\":\"09:34\",\"Deviations\":null,\"TransportMode\":\"TRAIN\",\"LineNumber\":\"35\",\"Destination\":\"Västerhaninge\",\"SiteId\":9001}]," +
                                         "\"Trams\":[],\"Ships\":[],\"StopPointDeviations\":[{\"StopInfo\":{\"StopAreaNumber\":0,\"StopAreaName\":\"Stockholms central\",\"TransportMode\":\"TRAIN\",\"GroupOfLine\":null}," +
                                         "\"Deviation\":{\"Text\":\"Bussar ersätter sträckan Spånga till Bålsta och Västerhaninge-Nynäshamn till 2/8. Se sl.se\",\"Consequence\":null,\"ImportanceLevel\":5}}]}}";
-            
-            var realtime = JsonConvert.DeserializeObject<realTimeMessage>(json2);
 
-            Console.WriteLine("No. of metro responses: " + realtime.DepartureObject.Metros.Count);
-            Console.WriteLine("No. of Buses responses: " + realtime.DepartureObject.Buses.Count);
-            Console.WriteLine("No. of train responses: " + realtime.DepartureObject.Trains.Count);
-            Console.WriteLine("No. of trams responses: " + realtime.DepartureObject.Trams.Count);
-            Console.WriteLine("No. of shipresponses: " + realtime.DepartureObject.Trams.Count);
-            Console.WriteLine("No. of  StopPointDeviations esponses: " + realtime.DepartureObject.StopPointDeviations.Count  );
-
-            foreach (Metros met in realtime.DepartureObject.Metros)
+            //downnloadString: 
+            int timeWindow;
+            int siteID;
+            try
             {
-                listBox1.Items.Add(met.LineNumber + " " + met.Destination + " - " + met.DisplayTime + " - " + met.PlatformMessage);
+                timeWindow = int.Parse(timeWindowLabel.Text);
+                siteID = int.Parse(stationIdTextBox.Text);// Akalla 9300, TCE: 9001, slussen 9192, solna c 9305, solna station, 9509
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Error trying to parse timewindow: " + err);
+                return;
+            }
+            ApiKeyHolder apiKey = ApiKeyHolder.Instance;
+            // http:// api.sl.se/api2/realtimedepartures.<FORMAT>?key=<DIN API NYCKEL>&siteid=<SITEID>&timewindow=<TIMEWINDOW>
+            string downloadString = "http://api.sl.se/api2/realtimedepartures.JSON?key=" + apiKey.ApiKeyDepartures +
+                                            "&siteid=" + siteID +
+                                            "&timewindow=" + timeWindow;
+            clearAllTextBoxes();
+
+            Console.WriteLine(downloadString);
+            using (WebClient wc = new WebClient())
+            {
+                wc.Encoding = System.Text.Encoding.UTF8;
+                
+                var downloadedJsonObj = wc.DownloadString(downloadString);
+                var realtime = JsonConvert.DeserializeObject<realTimeMessage>(downloadedJsonObj);
+               // var realtime = JsonConvert.DeserializeObject<realTimeMessage>(json2);
+            
+
+                Console.WriteLine("No. of metro responses: " + realtime.DepartureObject.Metros.Count);
+                Console.WriteLine("No. of Buses responses: " + realtime.DepartureObject.Buses.Count);
+                Console.WriteLine("No. of train responses: " + realtime.DepartureObject.Trains.Count);
+                Console.WriteLine("No. of trams responses: " + realtime.DepartureObject.Trams.Count);
+                Console.WriteLine("No. of shipresponses: " + realtime.DepartureObject.Trams.Count);
+                Console.WriteLine("No. of StopPointDeviations esponses: " + realtime.DepartureObject.StopPointDeviations.Count  );
+                Console.WriteLine("Complete json-string: ");
+                Console.WriteLine(downloadedJsonObj);
+
+
+
+                /*
+                  * tunnelbanor bör pars'ar med avseende på groupofline id, sen departuregroupid
+                  * 
+                  */
+                if (realtime.DepartureObject.Metros.Count > 0)
+                {
+                    foreach (Metros met in realtime.DepartureObject.Metros)
+                    {
+                        metroListBox.Items.Add(met.LineNumber + " " + met.Destination + " - " + met.DisplayTime + " - " + met.PlatformMessage);
+                    }
+                }
+                else
+                {
+                    metroListBox.Items.Add("No data to show!");
+                }
+
+                if (realtime.DepartureObject.Buses.Count > 0)
+                {
+                    foreach (Buses bus in realtime.DepartureObject.Buses  )
+                    {
+                        busListBox.Items.Add(bus.LineNumber + " - " + bus.Destination +", HPL: " + bus.StopPointDesignation + ": " + bus.DisplayTime  );
+                    }
+                }
+                else
+                {
+                    busListBox.Items.Add("No data to show!");
+                }
+
+                if (realtime.DepartureObject.Trains.Count > 0)
+                {
+                    foreach (Trains train in realtime.DepartureObject.Trains)
+                    {
+                        trainListBox.Items.Add( train.LineNumber + " - " +
+                                                train.Destination + " - Track: " + train.StopPointDesignation + 
+                                                ": " + train.DisplayTime  );
+                    }
+                }
+                else
+                {
+                    trainListBox.Items.Add("No data to show!");
+                }
+
+                if (realtime.DepartureObject.Trams.Count > 0)
+                {
+                    foreach (Trams tram in realtime.DepartureObject.Trams)
+                    {
+                        //Console.WriteLine(bus.LineNumber + " - " + bus.Destination + ": " + bus.DisplayTime);
+                       // tramListBox.Items.Add(tram.LineNumber + " - " + tram.Destination + ": " + tram.DisplayTime);
+                        tramListBox.Items.Add(tram.LineNumber + " - " +
+                            tram.Destination + " - Track: " + tram.StopPointDesignation +
+                            ": " + tram.DisplayTime);
+                    }
+                }
+                else
+                {
+                    tramListBox.Items.Add("No data to show!");
+                }
+
+                if (realtime.DepartureObject.Ships.Count > 0)
+                {
+                    foreach (Ships ship in realtime.DepartureObject.Ships)
+                    {
+                        //Console.WriteLine(bus.LineNumber + " - " + bus.Destination + ": " + bus.DisplayTime);
+                        // tramListBox.Items.Add(tram.LineNumber + " - " + tram.Destination + ": " + tram.DisplayTime);
+                        shipListBox.Items.Add(ship.LineNumber + " - " +
+                                                ship.Destination +   ": " + ship.DisplayTime);
+                    }
+                }
+                else
+                {
+                    shipListBox.Items.Add("No data to show!");
+                }
             }
             #endregion
 
-
-
-
+            progressBar1.Value = 0;
+            blockTimer.Start();
+            button1.Enabled = false;
         }
+
+        private void clearAllTextBoxes()
+        {
+
+            metroListBox.Items.Clear();
+            trainListBox.Items.Clear();
+            busListBox.Items.Clear();
+            tramListBox.Items.Clear();
+            shipListBox.Items.Clear();
+        
+        }
+
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -257,6 +325,26 @@ namespace SLApp
             apiForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             apiForm.Show();
         }
+        private void TrackBar1_ValueChanged(object sender, System.EventArgs e)
+        {
+            timeWindowLabel.Text = trackBar1.Value.ToString();
+
+        }
+
+
+        private void blockTimer_Tick(object sender, EventArgs e)
+        {
+            if (progressBar1.Value != 100)
+            {
+                progressBar1.Value++;
+            }
+            else
+            {
+                blockTimer.Stop();
+                button1.Enabled = true;
+            }
+        }
+
     }
 
 

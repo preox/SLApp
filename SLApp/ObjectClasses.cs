@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace SLApp
 {
+    /*
+     * Lot's of little classes.
+     * Probably too many. But they'r needed to account 
+     * for all possible variations of responses
+     * 
+     */
+
+
     #region Classes for handling stationrequests.
     public class stationMessage
     {
@@ -92,123 +100,115 @@ namespace SLApp
     public class Deviation
     {
         [JsonProperty("Consequence")]
-        private string Consequence { get; set; }
+        public string Consequence { get; set; }
 
         [JsonProperty("ImportanceLevel")]
-        private int ImportanceLevel { get; set; }
+        public int ImportanceLevel { get; set; }
 
         [JsonProperty("Text")]
-        private string Text { get; set; }
+        public string Text { get; set; }
     }
 
     public class StopPointDeviations
     {
         [JsonProperty("StopInfo")]
-        private StopInfo StopInfo { get; set; }
+        public StopInfo StopInfo { get; set; }
 
         [JsonProperty("Deviation")]
-        private Deviation Deviation { get; set; }
+        public Deviation Deviation { get; set; }
     }
 
     public class StopInfo
     {
         [JsonProperty("GroupOfLine")]
-        private string GroupOfLine { get; set; }
+        public string GroupOfLine { get; set; }
 
         [JsonProperty("StopAreaName")]
-        private string StopAreaName { get; set; }
+        public string StopAreaName { get; set; }
 
         [JsonProperty("StopAreaNumber")]
-        private int StopAreaNumber { get; set; }
+        public int StopAreaNumber { get; set; }
         [JsonProperty("TransportMode")]
-        private string TransportMode { get; set; }
+        public string TransportMode { get; set; }
     }
 
     // Common stuff
     public class Vehicle
     {
         [JsonProperty("SiteID")]
-        private int SiteID { get; set; }
+        public int SiteID { get; set; }
 
         [JsonProperty("TransportMode")]
-        private string TransportMode { get; set; }
+        public string TransportMode { get; set; }
 
         [JsonProperty("StopAreaName")]
-        private string StopAreaName { get; set; }
+        public string StopAreaName { get; set; }
 
         [JsonProperty("StopAreaNumber")]
-        private int StopAreaNumber { get; set; }
+        public int StopAreaNumber { get; set; }
 
         [JsonProperty("StopPointNumber")]
-        private int StopPointNumber { get; set; }
+        public int StopPointNumber { get; set; }
 
         [JsonProperty("LineNumber")]
-        private string LineNumber { get; set; }
+        public string LineNumber { get; set; }
 
         [JsonProperty("Destination")]
-        private string Destination { get; set; }
+        public string Destination { get; set; }
 
         [JsonProperty("TimeTabledDateTime")]
-        private string TimeTabledDateTime { get; set; } // TODO "DateTime egentligen
+        public string TimeTabledDateTime { get; set; } // TODO "DateTime egentligen
 
         [JsonProperty("ExpectedDateTime")]
-        private string ExpectedDateTime { get; set; } // TODO "DateTime egentligen
+        public string ExpectedDateTime { get; set; } // TODO "DateTime egentligen
 
         [JsonProperty("DisplayTime")]
-        private string DisplayTime { get; set; }
+        public string DisplayTime { get; set; }
 
         [JsonProperty("Deviations")]
-        private List<Deviation> Deviations { get; set; }
+        public List<Deviation> Deviations { get; set; }
 
         [JsonProperty("JourneyDirection")]
-        private int JourneyDirection { get; set; }
+        public int JourneyDirection { get; set; }
     }
-
-
 
     public class Buses : Vehicle
     {
         [JsonProperty("GroupOfLine")]
-        private string GroupOfLine { get; set; }
+        public string GroupOfLine { get; set; }
 
         [JsonProperty("StopPointDesignation")]
-        private string StopPointDesignation { get; set; }
+        public string StopPointDesignation { get; set; }
     }
 
     public class Trains : Vehicle
     {
         [JsonProperty("SecondaryDestinationName")]
-        private string SecondaryDestinationName { get; set; }
+        public string SecondaryDestinationName { get; set; }
 
         [JsonProperty("StopPointDesignation")]
-        private string StopPointDesignation { get; set; }
+        public string StopPointDesignation { get; set; }
     }
 
     public class Trams : Vehicle
     {
         [JsonProperty("GroupOfLine")]
-        private string GroupOfLine { get; set; }
+        public string GroupOfLine { get; set; }
 
         [JsonProperty("StopPointDesignation")]
-        private string StopPointDesignation { get; set; }
+        public string StopPointDesignation { get; set; }
     }
 
     public class Ships : Vehicle
     {
         [JsonProperty("GroupOfLine")]
-        private string GroupOfLine { get; set; }
+        public string GroupOfLine { get; set; }
     }
 
-    public class Metros
+    public class Metros : Vehicle
     {
         [JsonProperty("DepartureGroupId")]
         public int DepartureGroupId { get; set; }
-
-        [JsonProperty("Destination")]
-        public string Destination { get; set; }
-
-        [JsonProperty("DisplayTime")]
-        public string DisplayTime { get; set; }
 
         [JsonProperty("GroupOfLine")]
         public string GroupOfLine { get; set; }
@@ -216,23 +216,274 @@ namespace SLApp
         [JsonProperty("GroupOfLineId")]
         public int GroupOfLineId { get; set; }
 
-        [JsonProperty("JourneyDirection")]
-        public int JourneyDirection { get; set; }
-
-        [JsonProperty("LineNumber")]
-        public string LineNumber { get; set; }
-
         [JsonProperty("PlatformMessage")]
         public string PlatformMessage { get; set; }
 
         [JsonProperty("SiteId")]
         public int SiteId { get; set; }
 
-        [JsonProperty("StopAreaName")]
-        public string StopAreaName { get; set; }
 
-        [JsonProperty("TransportMode")]
-        public string TransportMode { get; set; }
     }
     #endregion
+
+    #region Signclasses
+
+    // masterstopsign-class. other signs will ärva
+    public class stopSign
+    {
+        private int siteID;
+        private string transportMode;
+        private string stopAreaName;
+        private string lineNumber;
+        private string destination;
+        private string displayDime;
+        private int journeyDirection;
+
+
+        public string DisplayDime
+        {
+            get { return displayDime; }
+            set { displayDime = value; }
+        }
+
+        public string Destination
+        {
+            get { return destination; }
+            set { destination = value; }
+        }
+
+        public string LineNumber
+        {
+            get { return lineNumber; }
+            set { lineNumber = value; }
+        }
+
+        public string StopAreaName
+        {
+            get { return stopAreaName; }
+            set { stopAreaName = value; }
+        }
+
+        public int JourneyDirection
+        {
+            get { return journeyDirection; }
+            set { journeyDirection = value; }
+        }
+        public int SiteID
+        {
+            get { return siteID; }
+            set { siteID = value; }
+        }
+        public string TransportMode
+        {
+            get { return transportMode; }
+            set { transportMode = value; }
+        }
+    }
+
+    public class metroStopSign : stopSign
+    {
+
+        private List<Metros> metroList;
+        
+        // According to trafiklab's specc
+        private string groupOfLine;
+        private int groupOfLineId;
+        private string platformMessage;
+        private int departureGroupID;
+
+
+        public int DepartureGroupID
+        {
+            get { return departureGroupID; }
+            set { departureGroupID = value; }
+        }
+
+        public string PlatformMessage
+        {
+            get { return platformMessage; }
+            set { platformMessage = value; }
+        }
+
+        public int GroupOfLineId
+        {
+            get { return groupOfLineId; }
+            set { groupOfLineId = value; }
+        }
+
+        public string GroupOfLine
+        {
+            get { return groupOfLine; }
+            set { groupOfLine = value; }
+        }
+
+        public List<Metros> MetroList
+        {
+            get { return metroList; }
+            set { metroList = value; }
+        }
+
+    }
+
+    public class busStopSign : stopSign
+    {
+        private List<Buses> busList;
+
+        public List<Buses> BusList
+        {
+            get { return busList; }
+            set { busList = value; }
+        }
+
+
+        private string groupOfLine;
+        private string stopPointDesignation;
+
+        public string StopPointDesignation
+        {
+            get { return stopPointDesignation; }
+            set { stopPointDesignation = value; }
+        }
+
+        public string GroupOfLine
+        {
+            get { return groupOfLine; }
+            set { groupOfLine = value; }
+        }
+
+    
+    }
+
+    public class trainStopSign : stopSign
+    {
+        private string stopPointDesignation;
+        private string SecondaryDestinationName;
+        private List<Trains> trainList;
+
+        public List<Trains> TrainList
+        {
+            get { return trainList; }
+            set { trainList = value; }
+        }
+
+
+        public string StopPointDesignation
+        {
+            get { return stopPointDesignation; }
+            set { stopPointDesignation = value; }
+        }
+
+        public string SecondaryDestinationName1
+        {
+            get { return SecondaryDestinationName; }
+            set { SecondaryDestinationName = value; }
+        }
+
+
+    
+    }
+
+    public class tramStopSign : stopSign
+    {
+        private string groupOfLine;
+        private string stopPointDesignation;
+        private List<Trams> tramList;
+
+        public List<Trams> TramList
+        {
+            get { return tramList; }
+            set { tramList = value; }
+        }
+
+        public string StopPointDesignation
+        {
+            get { return stopPointDesignation; }
+            set { stopPointDesignation = value; }
+        }
+        public string GroupOfLine
+        {
+            get { return groupOfLine; }
+            set { groupOfLine = value; }
+        }
+    }
+
+    public class shipStopSign : stopSign
+    {
+        private List<Ships> shipList;
+        private string GroupOfLine;
+
+        public string GroupOfLine1
+        {
+            get { return GroupOfLine; }
+            set { GroupOfLine = value; }
+        }
+
+        public List<Ships> ShipList
+        {
+            get { return shipList; }
+            set { shipList = value; }
+        }
+
+    }
+    
+    #endregion
+
+
+
+    public class departure
+    { 
+    
+    }
+
+    // Dumpa denna? 
+
+    public class mainStationStopSign 
+    {
+
+        private int siteID;
+        public int SiteID
+        {
+            get { return siteID; }
+            set { siteID = value; }
+        }
+
+        private List<metroStopSign> metroSigns;
+        private List<busStopSign> busSigns;
+        private List<trainStopSign> trainSigns;
+        private List<tramStopSign> tramSigns;
+        private List<shipStopSign> shipSigns;
+
+        public List<shipStopSign> ShipSigns
+        {
+            get { return shipSigns; }
+            set { shipSigns = value; }
+        }
+
+        public List<tramStopSign> TramSigns
+        {
+            get { return tramSigns; }
+            set { tramSigns = value; }
+        }
+
+        public List<trainStopSign> TrainSigns
+        {
+            get { return trainSigns; }
+            set { trainSigns = value; }
+        }
+
+        public List<busStopSign> BusSigns
+        {
+            get { return busSigns; }
+            set { busSigns = value; }
+        }
+
+        public List<metroStopSign> MetroSigns
+        {
+            get { return metroSigns; }
+            set { metroSigns = value; }
+        }
+
+
+    }
+    
 }
