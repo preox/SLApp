@@ -1,4 +1,5 @@
 SLApp/bin/*.*
 SLApp/bin/Debug/*.*
 SLApp/obj/*.*
+SLApp/obj/Debug/*
 SLApp/obj/Debug/*.*
