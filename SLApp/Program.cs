@@ -14,6 +14,7 @@ namespace SLApp
          * 
          * https://www.trafiklab.se/api/sl-realtidsinformation-3
          * 
+         * Json-stuff  http://stackoverflow.com/questions/11126242/using-jsonconvert-deserializeobject-to-deserialize-json-to-a-c-sharp-poco-class
          * 
          * program dependencies: Newtonsoft Json-stuff
          * 
@@ -23,6 +24,8 @@ namespace SLApp
         {
             string fileName = "";
 
+
+            /* Ugly hack. Reconsidering the neccessity. */
             if (args.Length == 0)
             {
                 MessageBox.Show("No Api-file given\n"
