@@ -45,7 +45,7 @@ namespace SLApp
 
         public override string ToString()
         {
-            return Name + ", Siteid: " + SiteId ;
+            return Name;// +", Siteid: " + SiteId;
         }
 
     }
@@ -106,6 +106,7 @@ namespace SLApp
 
         [JsonProperty("Text")]
         public string Text { get; set; }
+
     }
 
     public class StopPointDeviations
@@ -115,6 +116,12 @@ namespace SLApp
 
         [JsonProperty("Deviation")]
         public Deviation Deviation { get; set; }
+
+        public override string ToString()
+        {
+            return "(" + this.StopInfo.TransportMode + ") "
+                   + this.Deviation.Text;
+        }
     }
 
     public class StopInfo
@@ -178,6 +185,18 @@ namespace SLApp
 
         [JsonProperty("StopPointDesignation")]
         public string StopPointDesignation { get; set; }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(this.StopPointDesignation))
+                return this.LineNumber + " - " + this.Destination
+                                + ": " + this.DisplayTime;
+            else
+                return this.LineNumber + " - " + this.Destination
+                                    + ", HPL: " + this.StopPointDesignation
+                                    + ": " + this.DisplayTime;
+
+        }
     }
 
     public class Trains : Vehicle
@@ -187,6 +206,13 @@ namespace SLApp
 
         [JsonProperty("StopPointDesignation")]
         public string StopPointDesignation { get; set; }
+
+        public override string ToString()
+        {
+            return this.LineNumber + " - " +
+                    this.Destination + " - Track: " + this.StopPointDesignation +
+                    ": " + this.DisplayTime;
+        }
     }
 
     public class Trams : Vehicle
@@ -196,12 +222,34 @@ namespace SLApp
 
         [JsonProperty("StopPointDesignation")]
         public string StopPointDesignation { get; set; }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(this.StopPointDesignation))
+            {
+                return this.LineNumber + " - " +
+                                    this.Destination +
+                                    ": " + this.DisplayTime;
+            }
+            else
+            {
+                return this.LineNumber + " - " +
+                                    this.Destination + " - Track: " + this.StopPointDesignation +
+                                    ": " + this.DisplayTime;
+            }
+        }
     }
 
     public class Ships : Vehicle
     {
         [JsonProperty("GroupOfLine")]
         public string GroupOfLine { get; set; }
+
+        public override string ToString()
+        {
+            return this.LineNumber + " - " +
+                    this.Destination + ": " + this.DisplayTime;
+        }
     }
 
     public class Metros : Vehicle
@@ -220,6 +268,15 @@ namespace SLApp
 
         [JsonProperty("SiteId")]
         public int SiteId { get; set; }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(this.PlatformMessage))
+                return this.LineNumber + " " + this.Destination + " - " + this.DisplayTime;
+            else
+                return this.LineNumber + " " + this.Destination + " - " + this.DisplayTime + " - " + this.PlatformMessage;
+                    
+        }
 
 
     }

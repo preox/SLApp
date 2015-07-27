@@ -16,6 +16,9 @@ namespace SLApp
          * 
          * Json-stuff  http://stackoverflow.com/questions/11126242/using-jsonconvert-deserializeobject-to-deserialize-json-to-a-c-sharp-poco-class
          * 
+         * objectlistview stuff:
+         * http://www.codeproject.com/KB/list/objectlistview.aspx
+         * 
          * program dependencies: Newtonsoft Json-stuff
          * 
          *  */
