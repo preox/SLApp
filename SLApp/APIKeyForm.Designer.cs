@@ -34,6 +34,8 @@
             this.realTimeKeyTextBox = new System.Windows.Forms.TextBox();
             this.stationKeyTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.selectFileButton = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,6 +50,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.selectFileButton);
             this.groupBox1.Controls.Add(this.okButton);
             this.groupBox1.Controls.Add(this.realTimeKeyTextBox);
             this.groupBox1.Controls.Add(this.stationKeyTextBox);
@@ -62,7 +65,7 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(81, 174);
+            this.okButton.Location = new System.Drawing.Point(178, 192);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 4;
@@ -93,6 +96,21 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "RealtimeKey";
             // 
+            // selectFileButton
+            // 
+            this.selectFileButton.Location = new System.Drawing.Point(6, 192);
+            this.selectFileButton.Name = "selectFileButton";
+            this.selectFileButton.Size = new System.Drawing.Size(75, 23);
+            this.selectFileButton.TabIndex = 5;
+            this.selectFileButton.Text = "Select File...";
+            this.selectFileButton.UseVisualStyleBackColor = true;
+            this.selectFileButton.Click += new System.EventHandler(this.selectFileButton_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "txt";
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // APIKeyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -120,5 +138,7 @@
         private System.Windows.Forms.TextBox realTimeKeyTextBox;
         private System.Windows.Forms.TextBox stationKeyTextBox;
         private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button selectFileButton;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

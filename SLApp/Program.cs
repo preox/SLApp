@@ -18,61 +18,22 @@ namespace SLApp
          * 
          * objectlistview stuff:
          * http://www.codeproject.com/KB/list/objectlistview.aspx
+         * http://objectlistview.sourceforge.net/cs/gettingStarted.html#gettingstarted
          * 
          * program dependencies: Newtonsoft Json-stuff
+         * 
+         * 
+         * 
+         * 
+         * TODO: 
+         * 
+         * felhantering (parsning går åt skogen)
          * 
          *  */
         [STAThread]
         static void Main(string[] args)
         {
-            string fileName = "";
-
-
-            /* Ugly hack. Reconsidering the neccessity. */
-            if (args.Length == 0)
-            {
-                MessageBox.Show("No Api-file given\n"
-                                 + "usage: SLApp.exe --apifile=<filename>"
-                                ,"Missing api-file",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                System.Environment.Exit(1);
-            }
-
-            foreach (string st in args)
-            {
-                if (st.Contains("--apifile="))
-                {
-                    Regex regex = new Regex(@"--apifile=(.*)$");
-                    Match match = regex.Match(st);
-                    if (!match.Success || match.Groups.Count == 0 )
-                    {
-                        MessageBox.Show("Error parsing ",
-                                     "Parseerror",
-                                     MessageBoxButtons.OK,
-                                     MessageBoxIcon.Error);
-                        System.Environment.Exit(1); 
-                    }
-
-                    fileName = match.Groups[1].ToString();
-                    break;
-                }
-            }
-
-
-
-            ApiKeyHolder apiKey = ApiKeyHolder.Instance;
-            try
-            {
-                apiKey.readKeysFromFile(fileName);
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("Error: " + err );
-                System.Environment.Exit(1);
-            }
-            
-
+            Console.WriteLine("filename: " + Properties.Settings.Default.apiKeyFileName);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

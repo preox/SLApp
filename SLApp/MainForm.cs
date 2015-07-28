@@ -29,7 +29,7 @@ namespace SLApp
             blockTimer.Interval = 100;
             blockTimer.Tick += new EventHandler(blockTimer_Tick);
 
-          //  lists should't group stuff. 
+           // lists should't group stuff. 
             metroObjectListView.ShowGroups = false;
             busObjectListView.ShowGroups = false;
             trainObjectListView.ShowGroups = false;
@@ -38,38 +38,6 @@ namespace SLApp
             deviationObjectListView.ShowGroups = false;
         }
 
-        // Clear all listboxes in all tabs. 
-        // A tad ugly but...whatthefuck
-        private void clearAllTextBoxes()
-        {
-            busObjectListView.ClearObjects();
-            metroObjectListView.ClearObjects();
-            trainObjectListView.ClearObjects();
-            tramObjectListView.ClearObjects();
-            shipObjectListView.ClearObjects();
-            deviationObjectListView.ClearObjects();
-        }
-
-        // To update the selected time
-        private void TrackBar1_ValueChanged(object sender, System.EventArgs e)
-        {
-            timeWindowLabel.Text = trackBar1.Value.ToString();
-
-        }
-
-        // Called with a regular interval from timer. Updates progressbar
-        private void blockTimer_Tick(object sender, EventArgs e)
-        {
-            if (progressBar1.Value != 100)
-            {
-                progressBar1.Value++;
-            }
-            else
-            {
-                blockTimer.Stop();
-                fetchDataButton.Enabled = true;
-            }
-        }
 
         // Search for stations
         private void stationSearch()
@@ -88,9 +56,21 @@ namespace SLApp
 
             using (WebClient wc = new WebClient())
             {
+                stationSeachResultListBox.Items.Clear();
+
                 wc.Encoding = System.Text.Encoding.UTF8;
                 var stationMessage = JsonConvert.DeserializeObject<stationMessage>(wc.DownloadString(downloadString));
-                stationSeachResultListBox.Items.Clear();
+                
+
+                if (stationMessage.StatusCode != 0)
+                {
+                    MessageBox.Show("Errorcode: " + stationMessage.StatusCode + "\nMessage:\n" + 
+                                    stationMessage.Message
+                                    , "Error Communicating with SL ", MessageBoxButtons.OK
+                                    , MessageBoxIcon.Error);
+                    return;
+                }
+
                 foreach (siteObject site in stationMessage.ResponseData)
                 {
                     stationSeachResultListBox.Items.Add(site);
@@ -98,7 +78,7 @@ namespace SLApp
             }
         }
 
-        // does the actual dataretrieval
+        // does the actual dataretrieval for realtime response
         private void fetchRealTimeData()
         {
             progressBar1.Value = 0;
@@ -118,7 +98,7 @@ namespace SLApp
                 try
                 {
                     siteID = ((siteObject)stationSeachResultListBox.SelectedItem).SiteId;
-                    this.Text = "SLApp    -    " + ((siteObject)stationSeachResultListBox.SelectedItem).Name;
+                    this.Text = "SLApp - " + ((siteObject)stationSeachResultListBox.SelectedItem).Name;
                 }
                 catch (Exception err)
                 {
@@ -128,18 +108,9 @@ namespace SLApp
 
                 }
             }
-            try
-            {
-                timeWindow = int.Parse(timeWindowLabel.Text);
 
-            }
-            catch (Exception err)
-            {
-            //    Console.WriteLine("Error trying to parse timewindow: " + err);
-                MessageBox.Show("Error trying to parse timewindow:\n" + err,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            timeWindow = trackBar1.Value; // int.Parse(timeWindowLabel.Text);
+
             ApiKeyHolder apiKey = ApiKeyHolder.Instance;
             string downloadString = "http://api.sl.se/api2/realtimedepartures.JSON?key=" +
                                             apiKey.ApiKeyDepartures +
@@ -148,11 +119,23 @@ namespace SLApp
 
             clearAllTextBoxes();
 
-           // Console.WriteLine("Constructed downloadstring: " + downloadString);
+
             using (WebClient wc = new WebClient())
             {
-                wc.Encoding = System.Text.Encoding.UTF8; // Swedish char's turned out funny, otherwise
+                wc.Encoding = System.Text.Encoding.UTF8; // Swedish chars turned out funny, otherwise
+
                 var realtime = JsonConvert.DeserializeObject<realTimeMessage>(wc.DownloadString(downloadString));
+
+                if (realtime.StatusCode != 0)
+                {
+                    MessageBox.Show("Errorcode: " + realtime.StatusCode + "\nMessage:\n" +
+                                    realtime.Message
+                                    , "Error Communicating with SL", MessageBoxButtons.OK
+                                    , MessageBoxIcon.Error);
+                    return;
+                }
+
+
                 metroTab.Text = "metro (" + realtime.DepartureObject.Metros.Count + ")";
                 busTab.Text = "Buses (" + realtime.DepartureObject.Buses.Count + ")";
                 trainTab.Text = "Trains (" + realtime.DepartureObject.Trains.Count + ")";
@@ -162,11 +145,10 @@ namespace SLApp
 
 
                 /*
-                    * TODO this section really should be rewritten with some generic method....
-                    * But ....tricky shit.....
-                    * 
-                    */
-
+                * TODO this section really should be rewritten with some generic method....
+                * But ....tricky shit.....
+                * 
+                */
                 // METROS
                 if (realtime.DepartureObject.Metros.Count > 0)
                 {
@@ -224,7 +206,7 @@ namespace SLApp
             }
         }
 
-        // Key-down event in searchtextbox. If enter is pressed, call same searchbutton-function
+        // Key-down event in searchtextbox. If enter is pressed, call searchbutton-function
         private void stationSeachTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter )
@@ -270,10 +252,37 @@ namespace SLApp
         #endregion
 
 
+        // Clear all listboxes in all tabs. 
+        // A tad ugly but...whatthefuck
+        private void clearAllTextBoxes()
+        {
+            busObjectListView.ClearObjects();
+            metroObjectListView.ClearObjects();
+            trainObjectListView.ClearObjects();
+            tramObjectListView.ClearObjects();
+            shipObjectListView.ClearObjects();
+            deviationObjectListView.ClearObjects();
+        }
 
-    }
+        // To update the selected time
+        private void TrackBar1_ValueChanged(object sender, System.EventArgs e)
+        {
+            timeWindowLabel.Text = trackBar1.Value.ToString();
+        }
 
+        // Called with a regular interval from timer. Updates progressbar
+        private void blockTimer_Tick(object sender, EventArgs e)
+        {
+            if (progressBar1.Value != 100)
+            {
+                progressBar1.Value++;
+            }
+            else
+            {
+                blockTimer.Stop();
+                fetchDataButton.Enabled = true;
+            }
+        }
 
-
-
-}
+    } // public partial class MainForm : Form
+} // namespace

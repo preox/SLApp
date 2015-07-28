@@ -19,10 +19,12 @@ namespace SLApp
 	        get { return _instance; }
         }
 
+        // public constructor
         private ApiKeyHolder()
         {
         }
 
+        // read and parse from file. 
         public void readKeysFromFile (string fileName)
         {
             string lines = System.IO.File.ReadAllText(@fileName);
@@ -43,6 +45,9 @@ namespace SLApp
                 throw new System.Exception("Failed to parse apiKeyDepartures in keyfile");
             }
             apiKeyDepartures = match.Groups[1].ToString();
+
+
+
         }
 
         # region Getters&setters
